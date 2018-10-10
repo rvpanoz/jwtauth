@@ -9,8 +9,9 @@ import userRoutes from "./routes/user";
 //mongo url to connect
 const { url } = config || "";
 
-//setup mongoose promise library
+//setup mongoose
 mongoose.Promise = global.Promise;
+mongoose.set("useCreateIndex", true);
 
 /**
  * Server instance
@@ -29,7 +30,7 @@ db.on("error", console.error.bind(console, "MongoDB connection error:"));
 
 const init = async () => {
   /**
-   * MongoDB connection
+   * Connect to MongoDB
    */
   connect(url);
 
@@ -51,7 +52,7 @@ const init = async () => {
   });
 
   /**
-   * Setup routes
+   * Add routes
    */
   server.route(userRoutes);
 

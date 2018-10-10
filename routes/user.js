@@ -1,4 +1,10 @@
-import { verifyUniqueUser, hashPassword, createUser } from "../utils/auth";
+import {
+  verifyUniqueUser,
+  verifyCredentials,
+  hashPassword,
+  createUser,
+  createToken
+} from "../utils/auth";
 
 const routes = [
   {
@@ -17,50 +23,60 @@ const routes = [
         headers: ["Access-Control-Allow-Origin"],
         additionalHeaders: ["cache-control", "x-requested-with"]
       },
-      handler: (req, h) => {
+      handler: async (req, h) => {
         const { payload } = req;
         const { email, password } = payload || {};
 
-        hashPassword(password, (err, hash) => {
-          if (err) {
-            throw Boom.badRequest(err);
-          }
+        const hash = await hashPassword(password);
+        const newUser = await createUser(email, hash);
+        const token = await createToken(newUser);
 
-          const result = createUser(email, hash);
+        return h
+          .response({
+            success: true,
+            data: {
+              user: newUser,
+              token
+            }
+          })
+          .type("application/json");
+      }
+    }
+  },
+  {
+    method: "POST",
+    path: "/api/user/authenticate",
+    config: {
+      auth: false,
+      cors: {
+        origin: ["*"],
+        headers: [
+          "Access-Control-Allow-Origin",
+          "Access-Control-Allow-Headers",
+          "Origin, X-Requested-With, Content-Type, Accept"
+        ],
+        additionalHeaders: ["cache-control", "x-requested-with"]
+      },
+      pre: [
+        {
+          method: verifyCredentials,
+          assign: "user"
+        }
+      ],
+      handler: (req, h) => {
+        const { id, email } = req.pre && req.pre.user;
 
-          return h.response({
-            result
-          });
-
-          result
-            .catch(e => {
-              return h
-                .response(
-                  Object.assign(response, {
-                    success: false,
-                    errorCode: e.code,
-                    errorMsg: e.errmsg
-                  })
-                )
-                .type("application/json");
-            })
-            .then(new_user => {
-              if (!new_user) {
-                throw Boom.notAcceptable("Failed at user creation");
-              }
-
-              return h
-                .response(
-                  Object.assign(response, {
-                    success: true,
-                    data: {
-                      id_token: createToken(new_user)
-                    }
-                  })
-                )
-                .type("application/json");
-            });
+        const token = createToken({
+          id,
+          email
         });
+        console.log(token);
+        return h
+          .response({
+            success: true,
+            data: { user: email, token }
+          })
+          .type("application/json");
       }
     }
   }

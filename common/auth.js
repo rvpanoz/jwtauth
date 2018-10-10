@@ -1,1 +1,5 @@
-export const secret = "jwtauth";
+const secret = "jwtauth";
+
+export default {
+  secret
+};
