@@ -29,7 +29,7 @@ const routes = [
 
         const hash = await hashPassword(password);
         const newUser = await createUser(email, hash);
-        const token = await createToken(newUser);
+        const token = createToken(newUser);
 
         return h
           .response({
