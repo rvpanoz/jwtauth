@@ -46,7 +46,7 @@ Register a new user to the system
     "user": {
       "created_at": "2018-10-10T21:34:41.417Z",
       "_id": "5bbe7077a613335cef0fd7ec",
-      "email": "rvpanozhh5529@gmail.com",
+      "email": "foo@bar.com",
       "password": "$2b$10$UmonZBB3bx8sxJU3SQpS.e60Gq.FMsyunTlJ6q58VsXEqXNGcEawi",
       "__v": 0
     },
