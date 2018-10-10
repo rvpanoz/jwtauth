@@ -19,7 +19,7 @@ export const verifyUniqueUser = async (request, h) => {
       }
     ]
   });
-  console.log(user);
+
   if (user && user.email === email) {
     return Boom.badRequest("Email taken");
   }

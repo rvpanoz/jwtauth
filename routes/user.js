@@ -70,7 +70,7 @@ const routes = [
           id,
           email
         });
-        console.log(token);
+
         return h
           .response({
             success: true,
