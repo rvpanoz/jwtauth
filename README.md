@@ -71,6 +71,42 @@ Register a new user to the system
 }
 ```
 
+## Authenticate user
+
+Authenticate a user using email and password
+
+**URL** : `/api/user/authenticate`
+
+**Method** : `POST`
+
+**Auth required** : NO
+
+**Payload example**
+
+```json
+{
+  "email": "foo@bar.com",
+  "password": "061182"
+}
+```
+## Success Responses
+
+**Condition** : Data provided is valid and User is authenticated.
+
+**Code** : `200 OK`
+
+**Content example** : Response with the user's email and signed token
+
+```json
+{
+    "success": true,
+    "data": {
+        "user": "foo@bar.com",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJ2cGFub3poaDU1MzI5QGdtYWlsLmNvbSIsImlhdCI6MTUzOTIwNzk3NiwiZXhwIjoxNTM5MjExNTc2fQ.keGuJZKWMwP4SNhvE_qyNHAIWx979vOFjB7obtrTHdk"
+    }
+}
+```
+
 ## Add custom routes
 
 Add your own routes to the routes folder. In order to register the routes with the server import your routes in `./server.js` and then issue the command
