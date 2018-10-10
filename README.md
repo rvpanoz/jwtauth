@@ -95,7 +95,7 @@ Authenticate a user using email and password
 
 **Code** : `200 OK`
 
-**Content example** : Response with the user's email and signed token
+**Content example** : Response with the user's email and token
 
 ```json
 {
