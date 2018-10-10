@@ -4,10 +4,10 @@ import mongoose from "mongoose";
 import { secret } from "./common/auth";
 import { validate } from "./utils/auth";
 import { connect } from "./utils/db";
-import userRoutes from "./routes/user";
+import { user as userRoutes } from "./routes";
 
 //mongo url to connect
-const { url } = config || "";
+const { url, port, cors } = config || "";
 
 //setup mongoose
 mongoose.Promise = global.Promise;
@@ -18,9 +18,9 @@ mongoose.set("useCreateIndex", true);
  */
 const server = new Hapi.Server({
   routes: {
-    cors: true
+    cors
   },
-  port: 4001
+  port
 });
 
 const db = mongoose.connection;

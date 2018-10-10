@@ -24,7 +24,7 @@ export const verifyUniqueUser = async (request, h) => {
     return Boom.badRequest("Email taken");
   }
 
-  // If everything checks out, send the payload through to the route handler
+  // if everything checks out, send the payload through to the route handler
   return h.response(request.payload);
 };
 
@@ -115,7 +115,15 @@ export const validate = (decoded, request, h) => {
 **/
 
 export const createToken = user =>
-  jwt.sign(user, auth.secret, {
-    algorithm: "HS256",
-    expiresIn: "1h"
-  });
+  jwt.sign(
+    {
+      id: user._id,
+      email: user.email,
+      scope: user.admin && "admin"
+    },
+    auth.secret,
+    {
+      algorithm: "HS256",
+      expiresIn: "1h"
+    }
+  );
